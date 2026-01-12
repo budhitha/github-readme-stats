@@ -1,4 +1,4 @@
-name: Deployment Prep
+name: Deployment
 on:
   workflow_dispatch:
   push:
@@ -6,15 +6,16 @@ on:
       - master
 
 jobs:
-  config:
-    if: github.repository == 'anuraghazra/github-readme-stats'
+  deploy:
+    # Only run if the push is from your GitHub username
+    if: github.actor == 'budhitha'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-      - name: Deployment Prep
-        run: python ./.github/workflows/deploy-prep.py
-      - uses: stefanzweifel/git-auto-commit-action@28e16e81777b558cc906c8750092100bbb34c5e3 # v7.0.0
-        with:
-          branch: vercel
-          create_branch: true
-          push_options: "--force"
+      - uses: actions/checkout@v4
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          vercel --prod --token $VERCEL_TOKEN --confirm

@@ -7,6 +7,16 @@ import gistCard from "./api/gist.js";
 import express from "express";
 
 const app = express();
+
+// Private token-based access middleware
+app.use((req, res, next) => {
+  const token = req.headers["x-private-token"];
+  if (!token || token !== process.env.PRIVATE_ACCESS_TOKEN) {
+    return res.status(403).send("Forbidden: Private access only.");
+  }
+  return next();
+});
+
 const router = express.Router();
 
 router.get("/", statsCard);
