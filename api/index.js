@@ -51,6 +51,26 @@ export default async (req, res) => {
   } = req.query;
   res.setHeader("Content-Type", "image/svg+xml");
 
+  // Restrict access to only your GitHub username
+  const allowedUsername = "budhitha";
+  if (username !== allowedUsername) {
+    res.status(403);
+    return res.send(
+      renderError({
+        message: "Forbidden",
+        secondaryMessage:
+          "This endpoint is only accessible for the authorized user.",
+        renderOptions: {
+          title_color: req.query.title_color,
+          text_color: req.query.text_color,
+          bg_color: req.query.bg_color,
+          border_color: req.query.border_color,
+          theme: req.query.theme,
+        },
+      }),
+    );
+  }
+
   const access = guardAccess({
     res,
     id: username,

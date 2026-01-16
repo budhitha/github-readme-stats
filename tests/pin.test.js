@@ -11,7 +11,7 @@ import { CACHE_TTL, DURATIONS } from "../src/common/cache.js";
 
 const data_repo = {
   repository: {
-    username: "anuraghazra",
+    username: "budhitha",
     name: "convoychat",
     stargazers: {
       totalCount: 38000,
@@ -44,13 +44,14 @@ describe("Test /api/pin", () => {
   it("should test the request", async () => {
     const req = {
       query: {
-        username: "anuraghazra",
+        username: "budhitha",
         repo: "convoychat",
       },
     };
     const res = {
       setHeader: jest.fn(),
       send: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     };
     mock.onPost("https://api.github.com/graphql").reply(200, data_user);
 
@@ -69,7 +70,7 @@ describe("Test /api/pin", () => {
   it("should get the query options", async () => {
     const req = {
       query: {
-        username: "anuraghazra",
+        username: "budhitha",
         repo: "convoychat",
         title_color: "fff",
         icon_color: "fff",
@@ -81,6 +82,7 @@ describe("Test /api/pin", () => {
     const res = {
       setHeader: jest.fn(),
       send: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     };
     mock.onPost("https://api.github.com/graphql").reply(200, data_user);
 
@@ -102,13 +104,14 @@ describe("Test /api/pin", () => {
   it("should render error card if user repo not found", async () => {
     const req = {
       query: {
-        username: "anuraghazra",
+        username: "budhitha",
         repo: "convoychat",
       },
     };
     const res = {
       setHeader: jest.fn(),
       send: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     };
     mock
       .onPost("https://api.github.com/graphql")
@@ -125,13 +128,14 @@ describe("Test /api/pin", () => {
   it("should render error card if org repo not found", async () => {
     const req = {
       query: {
-        username: "anuraghazra",
+        username: "budhitha",
         repo: "convoychat",
       },
     };
     const res = {
       setHeader: jest.fn(),
       send: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     };
     mock
       .onPost("https://api.github.com/graphql")
@@ -155,6 +159,7 @@ describe("Test /api/pin", () => {
     const res = {
       setHeader: jest.fn(),
       send: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     };
     mock.onPost("https://api.github.com/graphql").reply(200, data_user);
 
@@ -163,9 +168,16 @@ describe("Test /api/pin", () => {
     expect(res.setHeader).toHaveBeenCalledWith("Content-Type", "image/svg+xml");
     expect(res.send).toHaveBeenCalledWith(
       renderError({
-        message: "This username is blacklisted",
-        secondaryMessage: "Please deploy your own instance",
-        renderOptions: { show_repo_link: false },
+        message: "Forbidden",
+        secondaryMessage:
+          "This endpoint is only accessible for the authorized user.",
+        renderOptions: {
+          title_color: undefined,
+          text_color: undefined,
+          bg_color: undefined,
+          border_color: undefined,
+          theme: undefined,
+        },
       }),
     );
   });
@@ -173,7 +185,7 @@ describe("Test /api/pin", () => {
   it("should render error card if wrong locale provided", async () => {
     const req = {
       query: {
-        username: "anuraghazra",
+        username: "budhitha",
         repo: "convoychat",
         locale: "asdf",
       },
@@ -181,6 +193,7 @@ describe("Test /api/pin", () => {
     const res = {
       setHeader: jest.fn(),
       send: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     };
     mock.onPost("https://api.github.com/graphql").reply(200, data_user);
 
@@ -202,6 +215,7 @@ describe("Test /api/pin", () => {
     const res = {
       setHeader: jest.fn(),
       send: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     };
 
     await pin(req, res);
@@ -209,10 +223,16 @@ describe("Test /api/pin", () => {
     expect(res.setHeader).toHaveBeenCalledWith("Content-Type", "image/svg+xml");
     expect(res.send).toHaveBeenCalledWith(
       renderError({
-        message:
-          'Missing params "username", "repo" make sure you pass the parameters in URL',
-        secondaryMessage: "/api/pin?username=USERNAME&amp;repo=REPO_NAME",
-        renderOptions: { show_repo_link: false },
+        message: "Forbidden",
+        secondaryMessage:
+          "This endpoint is only accessible for the authorized user.",
+        renderOptions: {
+          title_color: undefined,
+          text_color: undefined,
+          bg_color: undefined,
+          border_color: undefined,
+          theme: undefined,
+        },
       }),
     );
   });
@@ -220,13 +240,14 @@ describe("Test /api/pin", () => {
   it("should have proper cache", async () => {
     const req = {
       query: {
-        username: "anuraghazra",
+        username: "budhitha",
         repo: "convoychat",
       },
     };
     const res = {
       setHeader: jest.fn(),
       send: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     };
     mock.onPost("https://api.github.com/graphql").reply(200, data_user);
 

@@ -94,13 +94,14 @@ const mock = new MockAdapter(axios);
 const faker = (query, data) => {
   const req = {
     query: {
-      username: "anuraghazra",
+      username: "budhitha",
       ...query,
     },
   };
   const res = {
     setHeader: jest.fn(),
     send: jest.fn(),
+    status: jest.fn().mockReturnThis(),
   };
   mock.onPost("https://api.github.com/graphql").replyOnce(200, data);
 
@@ -161,7 +162,7 @@ describe("Test /api/", () => {
   it("should get the query options", async () => {
     const { req, res } = faker(
       {
-        username: "anuraghazra",
+        username: "budhitha",
         hide: "issues,prs,contribs",
         show_icons: true,
         hide_border: true,
@@ -324,7 +325,7 @@ describe("Test /api/", () => {
   it("should allow changing ring_color", async () => {
     const { req, res } = faker(
       {
-        username: "anuraghazra",
+        username: "budhitha",
         hide: "issues,prs,contribs",
         show_icons: true,
         hide_border: true,
@@ -364,9 +365,16 @@ describe("Test /api/", () => {
     expect(res.setHeader).toHaveBeenCalledWith("Content-Type", "image/svg+xml");
     expect(res.send).toHaveBeenCalledWith(
       renderError({
-        message: "This username is blacklisted",
-        secondaryMessage: "Please deploy your own instance",
-        renderOptions: { show_repo_link: false },
+        message: "Forbidden",
+        secondaryMessage:
+          "This endpoint is only accessible for the authorized user.",
+        renderOptions: {
+          title_color: undefined,
+          text_color: undefined,
+          bg_color: undefined,
+          border_color: undefined,
+          theme: undefined,
+        },
       }),
     );
   });
@@ -400,13 +408,17 @@ describe("Test /api/", () => {
     expect(res.setHeader).toHaveBeenCalledWith("Content-Type", "image/svg+xml");
     expect(res.send).toHaveBeenCalledWith(
       renderError({
-        message: "Could not fetch total commits.",
-        secondaryMessage: "Please try again later",
+        message: "Forbidden",
+        secondaryMessage:
+          "This endpoint is only accessible for the authorized user.",
+        renderOptions: {
+          title_color: undefined,
+          text_color: undefined,
+          bg_color: undefined,
+          border_color: undefined,
+          theme: undefined,
+        },
       }),
-    );
-    // Received SVG output should not contain string "https://tiny.one/readme-stats"
-    expect(res.send.mock.calls[0][0]).not.toContain(
-      "https://tiny.one/readme-stats",
     );
   });
 });

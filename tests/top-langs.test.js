@@ -78,12 +78,13 @@ describe("Test /api/top-langs", () => {
   it("should test the request", async () => {
     const req = {
       query: {
-        username: "anuraghazra",
+        username: "budhitha",
       },
     };
     const res = {
       setHeader: jest.fn(),
       send: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     };
     mock.onPost("https://api.github.com/graphql").reply(200, data_langs);
 
@@ -96,7 +97,7 @@ describe("Test /api/top-langs", () => {
   it("should work with the query options", async () => {
     const req = {
       query: {
-        username: "anuraghazra",
+        username: "budhitha",
         hide_title: true,
         card_width: 100,
         title_color: "fff",
@@ -108,6 +109,7 @@ describe("Test /api/top-langs", () => {
     const res = {
       setHeader: jest.fn(),
       send: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     };
     mock.onPost("https://api.github.com/graphql").reply(200, data_langs);
 
@@ -129,12 +131,13 @@ describe("Test /api/top-langs", () => {
   it("should render error card on user data fetch error", async () => {
     const req = {
       query: {
-        username: "anuraghazra",
+        username: "budhitha",
       },
     };
     const res = {
       setHeader: jest.fn(),
       send: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     };
     mock.onPost("https://api.github.com/graphql").reply(200, error);
 
@@ -153,13 +156,14 @@ describe("Test /api/top-langs", () => {
   it("should render error card on incorrect layout input", async () => {
     const req = {
       query: {
-        username: "anuraghazra",
+        username: "budhitha",
         layout: ["pie"],
       },
     };
     const res = {
       setHeader: jest.fn(),
       send: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     };
     mock.onPost("https://api.github.com/graphql").reply(200, data_langs);
 
@@ -183,6 +187,7 @@ describe("Test /api/top-langs", () => {
     const res = {
       setHeader: jest.fn(),
       send: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     };
     mock.onPost("https://api.github.com/graphql").reply(200, data_langs);
 
@@ -191,9 +196,16 @@ describe("Test /api/top-langs", () => {
     expect(res.setHeader).toHaveBeenCalledWith("Content-Type", "image/svg+xml");
     expect(res.send).toHaveBeenCalledWith(
       renderError({
-        message: "This username is blacklisted",
-        secondaryMessage: "Please deploy your own instance",
-        renderOptions: { show_repo_link: false },
+        message: "Forbidden",
+        secondaryMessage:
+          "This endpoint is only accessible for the authorized user.",
+        renderOptions: {
+          title_color: undefined,
+          text_color: undefined,
+          bg_color: undefined,
+          border_color: undefined,
+          theme: undefined,
+        },
       }),
     );
   });
@@ -201,13 +213,14 @@ describe("Test /api/top-langs", () => {
   it("should render error card if wrong locale provided", async () => {
     const req = {
       query: {
-        username: "anuraghazra",
+        username: "budhitha",
         locale: "asdf",
       },
     };
     const res = {
       setHeader: jest.fn(),
       send: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     };
     mock.onPost("https://api.github.com/graphql").reply(200, data_langs);
 
@@ -225,12 +238,13 @@ describe("Test /api/top-langs", () => {
   it("should have proper cache", async () => {
     const req = {
       query: {
-        username: "anuraghazra",
+        username: "budhitha",
       },
     };
     const res = {
       setHeader: jest.fn(),
       send: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     };
     mock.onPost("https://api.github.com/graphql").reply(200, data_langs);
 

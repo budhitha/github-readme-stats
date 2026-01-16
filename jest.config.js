@@ -1,6 +1,8 @@
 export default {
   clearMocks: true,
-  transform: {},
+  transform: {
+    "^.+\\.js$": ["babel-jest", { configFile: "./babel.config.js" }],
+  },
   testEnvironment: "jsdom",
   coverageProvider: "v8",
   testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/tests/e2e/"],
